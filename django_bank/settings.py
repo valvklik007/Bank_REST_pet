@@ -14,6 +14,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+from datetime import timedelta
 
 
 # Quick-start development settings - unsuitable for production
@@ -115,10 +116,65 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+}
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'JWT токен в формате: Bearer <token>'
+        }
+    },
+    'USE_SESSION_AUTH': True,
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
 AUTH_USER_MODEL = 'users.User'
+
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'USER_CREATE_PASSWORD_RETYPE': True,
+    'SERIALIZERS': {
+        'user_create': 'users.serializers.UserCreateSerializer',
+        'user': 'djoser.serializers.UserSerializer',
+        'current_user': 'djoser.serializers.UserSerializer',
+    },
+    'PERMISSIONS': {
+        'user_list': ['rest_framework.permissions.IsAdminUser'],
+        'user': ['rest_framework.permissions.IsAuthenticated'],
+    }
+}
+
+# DJOSER = {
+#     'LOGIN_FIELD': 'email',
+#     'USER_CREATE_PASSWORD_RETYPE': True,
+#     'SERIALIZERS': {},
+#     'HIDE_USERS': True,
+#     'DISABLE_ENDPOINTS': [
+#         'users',
+#         'users_list',
+#         'users_delete',
+#         'users_me',
+#         'users_reset_password',
+#         'users_reset_password_confirm',
+#         'users_reset_username',
+#         'users_reset_username_confirm',
+#         'users_set_password',
+#         'users_set_username',
+#         'users_activation',
+#         'users_resend_activation',
+#     ]
+# }
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
