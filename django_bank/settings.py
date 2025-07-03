@@ -144,6 +144,20 @@ AUTH_USER_MODEL = 'users.User'
 DJOSER = {
     'LOGIN_FIELD': 'email',
     'USER_CREATE_PASSWORD_RETYPE': True,
+    'DISABLE_ENDPOINTS': [
+        'users',
+        'users_list',
+        'users_delete',
+        'users_me',
+        'users_reset_password',
+        'users_reset_password_confirm',
+        'users_reset_username',
+        'users_reset_username_confirm',
+        'users_set_password',
+        'users_set_username',
+        'users_activation',
+        'users_resend_activation',
+    ],
     'SERIALIZERS': {
         'user_create': 'users.serializers.UserCreateSerializer',
         'user': 'djoser.serializers.UserSerializer',

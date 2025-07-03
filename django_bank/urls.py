@@ -30,6 +30,7 @@ schema_view = get_schema_view(
        ),
        public=True,
        permission_classes=[permissions.AllowAny],
+        authentication_classes=[],
 )
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -39,7 +40,7 @@ urlpatterns = [
     path('api/v1/auth/jwt/refresh/', TokenRefreshView.as_view(), name='jwt-refresh'),
 
     # Djoser
-    path('api/v1/auth/', include('djoser.urls')),
+    path('api/v1/auth/', include('users.urls')),
     path('api/v1/auth/', include('djoser.urls.jwt')),
 
     # Swagger
